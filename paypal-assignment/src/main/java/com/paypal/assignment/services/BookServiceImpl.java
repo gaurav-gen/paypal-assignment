@@ -15,8 +15,11 @@ import com.paypal.assignment.dto.request.UpdateBookRequest;
 import com.paypal.assignment.dto.response.ListBookResponse;
 import com.paypal.assignment.entities.Book;
 import com.paypal.assignment.entities.Library;
+import com.paypal.assignment.exception.ValidationException;
 import com.paypal.assignment.repositories.BookRepository;
 import com.paypal.assignment.repositories.LibraryRepository;
+import com.paypal.assignment.validator.BookValidator;
+import com.paypal.assignment.validator.ValidateRequest;
 
 /**
  * @author gaurav
@@ -32,7 +35,15 @@ public class BookServiceImpl implements BookService {
 	private LibraryRepository libraryRepository;
 
 	@Override
-	public Book create(CreateBookRequest createBookRequest) {
+	public Book create(CreateBookRequest createBookRequest)  {
+		
+		ValidateRequest<CreateBookRequest> validator = new BookValidator();
+		try {
+			validator.validate(createBookRequest);
+		} catch (ValidationException e) {
+			e.printStackTrace();
+		}
+		
 		Book book = new Book(createBookRequest.getTitle(), createBookRequest.getAuthor(),
 				fetchLibrary(createBookRequest.getLibraryId()));
 		return bookRepository.save(book);

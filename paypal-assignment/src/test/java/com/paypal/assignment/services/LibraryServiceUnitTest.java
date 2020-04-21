@@ -25,10 +25,6 @@ import com.paypal.assignment.repositories.LibraryRepository;
  * @author gaurav
  *
  */
-//@RunWith(MockitoJUnitRunner.class)
-//@RunWith(JUnitPlatform.class)
-//@SpringBootTest
-//@ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
 @ExtendWith(MockitoExtension.class)
 public class LibraryServiceUnitTest {
