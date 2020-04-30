@@ -24,7 +24,8 @@ import com.paypal.assignment.entities.Library;
 import com.paypal.assignment.services.LibraryService;
 
 /**
- * Unit test for LibraryController
+ * Unit test for LibraryController. Demonstrating usage of {@link MockMvc} via
+ * {@link WebMvcTest}
  * <p>
  * Using {@link MockMvc}
  * 

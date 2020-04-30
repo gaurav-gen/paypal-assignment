@@ -1,7 +1,6 @@
 package com.paypal.assignment.validator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,20 +16,20 @@ import com.paypal.assignment.exception.ValidationException;
 @ExtendWith(MockitoExtension.class)
 public class BookValidatorTest {
 
-	private ValidateRequest<CreateBookRequest> validateRequest = new BookValidator();
+	private ValidateRequest<CreateBookRequest<?>> validateRequest = new BookValidator();
 
 //	@befor
 
 	@Test
 	@DisplayName("Test the request validation")
 	void testRequestValidation() {
-		CreateBookRequest createBookRequest = new CreateBookRequest();
-		createBookRequest.setAuthor("Dan Brown");
+		CreateBookRequest<?> createBookRequest = new CreateBookRequest.CreateBookRequestBuilder<>().author("Dan Brown")
+				.build();
 		String errorMsg = "";
 		try {
 			errorMsg = validateRequest.validate(createBookRequest);
 		} catch (ValidationException e) {
-			e.printStackTrace();
+			// Do Nothing
 		}
 		assertEquals(null, errorMsg);
 //		assertThrows(ValidationException.class, () -> )

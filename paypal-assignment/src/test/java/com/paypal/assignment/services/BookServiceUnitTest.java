@@ -60,7 +60,7 @@ public class BookServiceUnitTest {
 	@BeforeAll
 	public static void init() {
 		library = new Library(1l, "ABC Library", "Bangalore");
-		book = new Book(1l, "The Da Vinci Code", "Dan Brown", library);
+		book = new Book.BookBuilder().id(1l).title("The Da Vinci Code").author("Dan Brown").library(library).build();
 	}
 
 	@Test
@@ -70,10 +70,8 @@ public class BookServiceUnitTest {
 		Optional<Library> optionalLibrary = Optional.of(library);
 		when(libraryRepository.findById(any(Long.class))).thenReturn(optionalLibrary);
 		when(bookRepository.save(any(Book.class))).thenReturn(book);
-		CreateBookRequest createBookRequest = new CreateBookRequest();
-		createBookRequest.setTitle("The Da Vinci Code");
-		createBookRequest.setAuthor("Dan Brown");
-		createBookRequest.setLibraryId(1l);
+		CreateBookRequest<?> createBookRequest = new CreateBookRequest.CreateBookRequestBuilder<>()
+				.title("The Da Vinci Code").author("Dan Brown").libraryId(1l).build();
 		Book book = bookService.create(createBookRequest);
 		assertEquals("The Da Vinci Code", book.getTitle());
 		assertEquals("Dan Brown", book.getAuthor());
@@ -117,11 +115,8 @@ public class BookServiceUnitTest {
 		Optional<Book> optionalBook = Optional.of(book);
 		when(bookRepository.findById(any(Long.class))).thenReturn(optionalBook);
 		when(bookRepository.save(any(Book.class))).thenReturn(book);
-		UpdateBookRequest updateBookRequest = new UpdateBookRequest();
-		updateBookRequest.setId(1l);
-		updateBookRequest.setTitle("Outliers");
-		updateBookRequest.setAuthor("Malcom Gladwell");
-		updateBookRequest.setLibraryId(1l);
+		UpdateBookRequest<?> updateBookRequest = new UpdateBookRequest.UpdateBookRequestBuilder<>().id(1l)
+				.title("Outliers").author("Malcom Gladwell").libraryId(1l).build();
 		Book book = bookService.update(updateBookRequest);
 		assertEquals("Outliers", book.getTitle());
 		assertEquals("Malcom Gladwell", book.getAuthor());
@@ -131,11 +126,8 @@ public class BookServiceUnitTest {
 	@Order(6)
 	@DisplayName("Test Book update with Book Not found")
 	public void testBookUpdateWithBookNotFound() {
-		UpdateBookRequest updateBookRequest = new UpdateBookRequest();
-		updateBookRequest.setId(1l);
-		updateBookRequest.setTitle("Outliers");
-		updateBookRequest.setAuthor("Malcom Gladwell");
-		updateBookRequest.setLibraryId(1l);
+		UpdateBookRequest<?> updateBookRequest = new UpdateBookRequest.UpdateBookRequestBuilder<>().id(1l)
+				.title("Outliers").author("Malcom Gladwell").libraryId(1l).build();
 		assertThrows(EntityNotFoundException.class, () -> bookService.update(updateBookRequest));
 	}
 
@@ -145,11 +137,8 @@ public class BookServiceUnitTest {
 	public void testBookUpdateWithLibraryNotFound() {
 		Optional<Book> optionalBook = Optional.of(book);
 		when(bookRepository.findById(any(Long.class))).thenReturn(optionalBook);
-		UpdateBookRequest updateBookRequest = new UpdateBookRequest();
-		updateBookRequest.setId(1l);
-		updateBookRequest.setTitle("Outliers");
-		updateBookRequest.setAuthor("Malcom Gladwell");
-		updateBookRequest.setLibraryId(1l);
+		UpdateBookRequest<?> updateBookRequest = new UpdateBookRequest.UpdateBookRequestBuilder<>().id(1l)
+				.title("Outliers").author("Malcom Gladwell").libraryId(1l).build();
 		assertThrows(EntityNotFoundException.class, () -> bookService.update(updateBookRequest));
 	}
 }

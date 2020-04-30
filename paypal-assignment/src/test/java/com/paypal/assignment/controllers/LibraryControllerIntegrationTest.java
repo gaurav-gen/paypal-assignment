@@ -17,7 +17,8 @@ import com.paypal.assignment.dto.request.CreateLibraryRequest;
 import com.paypal.assignment.entities.Library;
 
 /**
- * Integration Test for Library
+ * Integration Test for Library. Demonstrating actual API call made using rest
+ * template. No mocks used
  * 
  * @author gaurav
  *

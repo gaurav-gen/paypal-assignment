@@ -15,11 +15,8 @@ import com.paypal.assignment.dto.request.UpdateBookRequest;
 import com.paypal.assignment.dto.response.ListBookResponse;
 import com.paypal.assignment.entities.Book;
 import com.paypal.assignment.entities.Library;
-import com.paypal.assignment.exception.ValidationException;
 import com.paypal.assignment.repositories.BookRepository;
 import com.paypal.assignment.repositories.LibraryRepository;
-import com.paypal.assignment.validator.BookValidator;
-import com.paypal.assignment.validator.ValidateRequest;
 
 /**
  * @author gaurav
@@ -35,22 +32,14 @@ public class BookServiceImpl implements BookService {
 	private LibraryRepository libraryRepository;
 
 	@Override
-	public Book create(CreateBookRequest createBookRequest)  {
-		
-		ValidateRequest<CreateBookRequest> validator = new BookValidator();
-		try {
-			validator.validate(createBookRequest);
-		} catch (ValidationException e) {
-			e.printStackTrace();
-		}
-		
-		Book book = new Book(createBookRequest.getTitle(), createBookRequest.getAuthor(),
-				fetchLibrary(createBookRequest.getLibraryId()));
+	public Book create(CreateBookRequest<?> createBookRequest) {
+		Book book = new Book.BookBuilder().title(createBookRequest.getTitle()).author(createBookRequest.getAuthor())
+				.library(fetchLibrary(createBookRequest.getLibraryId())).build();
 		return bookRepository.save(book);
 	}
 
 	@Override
-	public Book update(UpdateBookRequest updateBookRequest) {
+	public Book update(UpdateBookRequest<?> updateBookRequest) {
 		Optional<Book> optionalBook = bookRepository.findById(updateBookRequest.getId());
 		if (optionalBook.isEmpty()) {
 			throw new EntityNotFoundException("Could not find the Book to be edited");

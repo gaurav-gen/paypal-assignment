@@ -4,11 +4,13 @@
 package com.paypal.assignment.dto.request;
 
 /**
+ * Demonstrating builder design pattern to create immutable CreateBookRequest
+ * object
  * 
  * @author gaurav
  *
  */
-public class CreateBookRequest {
+public class CreateBookRequest<B extends CreateBookRequest.CreateBookRequestBuilder<B>> {
 
 	private String title;
 
@@ -16,18 +18,21 @@ public class CreateBookRequest {
 
 	private Long libraryId;
 
+	public CreateBookRequest() {
+		// Do Nothing
+	}
+
+	public CreateBookRequest(CreateBookRequestBuilder<B> createBookRequestBuilder) {
+		this.title = createBookRequestBuilder.title;
+		this.author = createBookRequestBuilder.author;
+		this.libraryId = createBookRequestBuilder.libraryId;
+	}
+
 	/**
 	 * @return the title
 	 */
 	public String getTitle() {
 		return title;
-	}
-
-	/**
-	 * @param title the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	/**
@@ -38,24 +43,49 @@ public class CreateBookRequest {
 	}
 
 	/**
-	 * @param author the author to set
-	 */
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
-	/**
 	 * @return the libraryId
 	 */
 	public Long getLibraryId() {
 		return libraryId;
 	}
 
-	/**
-	 * @param libraryId the libraryId to set
-	 */
-	public void setLibraryId(Long libraryId) {
-		this.libraryId = libraryId;
+	@SuppressWarnings("unchecked")
+	public static class CreateBookRequestBuilder<B extends CreateBookRequest.CreateBookRequestBuilder<B>> {
+
+		private String title;
+
+		private String author;
+
+		private Long libraryId;
+
+		public CreateBookRequestBuilder() {
+			// Do Nothing
+		}
+
+		public CreateBookRequestBuilder(String title, String author, Long libraryId) {
+			this.title = title;
+			this.author = author;
+			this.libraryId = libraryId;
+		}
+
+		public B title(String title) {
+			this.title = title;
+			return (B) this;
+		}
+
+		public B author(String author) {
+			this.author = author;
+			return (B) this;
+		}
+
+		public B libraryId(Long libraryId) {
+			this.libraryId = libraryId;
+			return (B) this;
+		}
+
+		public CreateBookRequest<B> build() {
+			return new CreateBookRequest<>(this);
+		}
 	}
 
 }

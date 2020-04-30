@@ -22,14 +22,14 @@ public interface BookService {
 	 * @param createBookRequest
 	 * @return
 	 */
-	Book create(CreateBookRequest createBookRequest);
+	Book create(CreateBookRequest<?> createBookRequest);
 
 	/**
 	 * To edit a Book
 	 * 
 	 * @param updateBookRequest
 	 */
-	Book update(UpdateBookRequest updateBookRequest);
+	Book update(UpdateBookRequest<?> updateBookRequest);
 
 	/**
 	 * To get a Book

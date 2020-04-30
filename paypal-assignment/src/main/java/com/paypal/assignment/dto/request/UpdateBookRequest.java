@@ -7,9 +7,18 @@ package com.paypal.assignment.dto.request;
  * @author gaurav
  *
  */
-public class UpdateBookRequest extends CreateBookRequest {
+public class UpdateBookRequest<B extends UpdateBookRequest.UpdateBookRequestBuilder<B>> extends CreateBookRequest<B> {
 
 	private Long id;
+
+	public UpdateBookRequest() {
+		// Do Nothing
+	}
+
+	public UpdateBookRequest(UpdateBookRequestBuilder<B> updateBookRequestBuilder) {
+		super(updateBookRequestBuilder);
+		this.id = updateBookRequestBuilder.id;
+	}
 
 	/**
 	 * @return the id
@@ -18,11 +27,22 @@ public class UpdateBookRequest extends CreateBookRequest {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
+	@SuppressWarnings("unchecked")
+	public static class UpdateBookRequestBuilder<B extends UpdateBookRequest.UpdateBookRequestBuilder<B>>
+			extends CreateBookRequestBuilder<B> {
+
+		private Long id;
+
+		public B id(Long id) {
+			this.id = id;
+			return (B) this;
+		}
+
+		@Override
+		public UpdateBookRequest<B> build() {
+			return new UpdateBookRequest<>(this);
+		}
+
 	}
 
 }

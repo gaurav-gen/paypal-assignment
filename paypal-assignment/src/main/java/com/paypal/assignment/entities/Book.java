@@ -36,17 +36,11 @@ public class Book {
 
 	}
 
-	public Book(String title, String author, Library library) {
-		this.title = title;
-		this.author = author;
-		this.library = library;
-	}
-
-	public Book(Long id, String title, String author, Library library) {
-		this.id = id;
-		this.title = title;
-		this.author = author;
-		this.library = library;
+	public Book(BookBuilder bookBuilder) {
+		this.id = bookBuilder.id;
+		this.title = bookBuilder.title;
+		this.author = bookBuilder.author;
+		this.library = bookBuilder.library;
 	}
 
 	/**
@@ -54,13 +48,6 @@ public class Book {
 	 */
 	public Long getId() {
 		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	/**
@@ -103,6 +90,42 @@ public class Book {
 	 */
 	public void setLibrary(Library library) {
 		this.library = library;
+	}
+
+	public static class BookBuilder {
+
+		private Long id;
+
+		private String title;
+
+		private String author;
+
+		private Library library;
+
+		public BookBuilder id(Long id) {
+			this.id = id;
+			return this;
+		}
+
+		public BookBuilder title(String title) {
+			this.title = title;
+			return this;
+		}
+
+		public BookBuilder author(String author) {
+			this.author = author;
+			return this;
+		}
+
+		public BookBuilder library(Library library) {
+			this.library = library;
+			return this;
+		}
+
+		public Book build() {
+			return new Book(this);
+		}
+
 	}
 
 }

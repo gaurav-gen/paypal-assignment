@@ -30,7 +30,8 @@ import com.paypal.assignment.repositories.LibraryRepository;
 import com.paypal.assignment.services.BookService;
 
 /**
- * Integration Test for Book.
+ * Integration Test for Book. Demonstrating actual service layer call and
+ * mocking DAO layer
  * <p>
  * Using Mock Repository
  * 
@@ -57,7 +58,7 @@ public class BookControllerIntegrationTest {
 	@BeforeAll
 	public static void init() {
 		library = new Library(1l, "ABC Library", "Bangalore");
-		book = new Book(1l, "The Da Vinci Code", "Dan Brown", library);
+		book = new Book.BookBuilder().id(1l).title("The Da Vinci Code").author("Dan Brown").library(library).build();
 	}
 
 	@Test
@@ -66,10 +67,8 @@ public class BookControllerIntegrationTest {
 		Optional<Library> optionalLibrary = Optional.of(library);
 		when(libraryRepository.findById(any(Long.class))).thenReturn(optionalLibrary);
 		when(bookRepository.save(any(Book.class))).thenReturn(book);
-		CreateBookRequest createBookRequest = new CreateBookRequest();
-		createBookRequest.setTitle("The Da Vinci Code");
-		createBookRequest.setAuthor("Dan Brown");
-		createBookRequest.setLibraryId(1l);
+		CreateBookRequest<?> createBookRequest = new CreateBookRequest.CreateBookRequestBuilder<>()
+				.title("The Da Vinci Code").author("Dan Brown").libraryId(1l).build();
 		Book book = bookService.create(createBookRequest);
 		assertEquals("The Da Vinci Code", book.getTitle());
 	}
@@ -101,11 +100,8 @@ public class BookControllerIntegrationTest {
 		Optional<Library> optionalLibrary = Optional.of(library);
 		when(libraryRepository.findById(any(Long.class))).thenReturn(optionalLibrary);
 		when(bookRepository.save(any(Book.class))).thenReturn(book);
-		UpdateBookRequest updateBookRequest = new UpdateBookRequest();
-		updateBookRequest.setId(1l);
-		updateBookRequest.setTitle("Outliers");
-		updateBookRequest.setAuthor("Malcom Gladwell");
-		updateBookRequest.setLibraryId(1l);
+		UpdateBookRequest<?> updateBookRequest = new UpdateBookRequest.UpdateBookRequestBuilder<>().id(1l)
+				.title("Outliers").author("Malcom Gladwell").libraryId(1l).build();
 		Book book = bookService.update(updateBookRequest);
 		assertEquals("Outliers", book.getTitle());
 	}

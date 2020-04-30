@@ -37,7 +37,7 @@ public class BookController {
 	 * @param createBookRequest
 	 */
 	@PostMapping("/create")
-	public Book create(@RequestBody CreateBookRequest createBookRequest) {
+	public Book create(@RequestBody CreateBookRequest<?> createBookRequest) {
 		return bookService.create(createBookRequest);
 	}
 
@@ -47,7 +47,7 @@ public class BookController {
 	 * @param updateBookRequest
 	 */
 	@PutMapping("/update")
-	public Book update(@RequestBody UpdateBookRequest updateBookRequest) {
+	public Book update(@RequestBody UpdateBookRequest<?> updateBookRequest) {
 		return bookService.update(updateBookRequest);
 	}
 
